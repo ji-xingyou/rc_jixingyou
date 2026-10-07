@@ -1,0 +1,21 @@
+services:
+  notification-service:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      NOTIFY_DB_PATH: /data/notifications.db
+      NOTIFY_ALLOWED_HOSTS: webhook-sink
+    volumes:
+      - notification-data:/data
+    depends_on:
+      - webhook-sink
+
+  webhook-sink:
+    image: mendhak/http-https-echo:35
+    expose:
+      - "8080"
+
+volumes:
+  notification-data:
+
